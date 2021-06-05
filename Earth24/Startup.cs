@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DataLibrary;
 using Earth24.Data;
@@ -27,10 +28,17 @@ namespace Earth24
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<IDataAcess, DataAcess>();
+            services.AddHttpClient();
+            services.AddHttpClient("earth", c =>
+            {
+                c.BaseAddress = new Uri(Configuration.GetValue<string>("EarthAPI"));
+                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

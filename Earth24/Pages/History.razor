@@ -1,0 +1,151 @@
+﻿@page "/historico"
+
+@using DataLibrary
+@using models
+@using Microsoft.Extensions.Configuration
+@inject IDataAcess _data
+@inject IConfiguration _config
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject IHttpClientFactory _clientFactory
+@using System.Net.Http.Json
+
+
+<h3>History</h3>
+<h4>@currentHeading</h4>
+
+<label for="initdate">Initial Date </label>
+<input id="initdate" name="initdate" placeholder = "yyyy-mm-dd" @bind="InitDate" /><br />
+<label for="enddate">End Date</label>
+<input id="enddate" name="enddate" placeholder = "yyyy-mm-dd" @bind="EndDate" />
+
+<br />
+@*<button onclick="@getHistory()">Default History</button>*@
+
+<button onclick="@getHistoryQuery()">Need To Select Date</button>
+
+
+@if (string.IsNullOrWhiteSpace(errorString) == false)
+{
+    <div class="h2">@errorString</div>
+}
+else if (earthquake is null)
+{
+    <br />
+    <div class="h4">Waiting...</div>
+
+}
+else
+{
+    <p>@InitDate</p>
+    <p>@EndDate</p>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Magnitude</th>
+                <th>place</th>
+                <th>time</th>
+                <th>title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var w in earthquake.features)
+            {
+                var i = 0;
+                if (i==20)
+                    break;
+                i++;
+                <tr>
+                    <td>@w.id</td>
+                    <td>@w.properties.mag</td>
+                    <td>@w.properties.place</td>
+                    <td>@w.properties.time</td>
+                    <td>@w.properties.title</td>
+                </tr>
+                
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    Earthquake earthquake;
+
+    string errorString;
+
+    private string currentHeading = "Initial heading";
+    private string newHeading;
+    private string InitDate="2014-01-03";
+    private string EndDate="2014-01-04";
+    DateTime localDateTime, univDateTime;
+   
+    protected override async Task OnInitializedAsync()
+    {
+
+        var client = _clientFactory.CreateClient("earth");
+
+        try
+        {
+            earthquake = await client.GetFromJsonAsync<Earthquake>("query?format=geojson&starttime=2014-01-01&endtime=2014-01-02");
+
+            errorString = null;
+        }
+        catch (Exception e)
+        {
+            errorString = $"There was a error: {e.Message}";
+        }
+
+
+    }
+    //async Task getHistory()
+    //{
+
+    //    var client = _clientFactory.CreateClient("earth");
+
+    //    try
+    //    {
+    //        earthquake = await client.GetFromJsonAsync<Earthquake>("query?format=geojson&starttime=2014-01-01&endtime=2014-01-02");
+
+    //        errorString = null;
+    //        currentHeading = $"{newHeading}Sucesso";
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        errorString = $"There was a error: {e.Message}";
+    //    }
+
+
+    //}
+    async Task getHistoryQuery()
+    {
+
+        var client = _clientFactory.CreateClient("earth");
+
+        try
+        {
+            earthquake = await client.GetFromJsonAsync<Earthquake>($"query?format=geojson&starttime={InitDate}&endtime={EndDate}");
+            Console.WriteLine($"query?format=geojson&starttime={InitDate}&endtime={EndDate}");
+
+            errorString = null;
+            currentHeading = $"{newHeading}query?format=geojson&starttime={InitDate}&endtime={EndDate}";
+        }
+        catch (Exception e)
+        {
+            errorString = $"There was a error: {e.Message}";
+        }
+
+
+    }
+
+    private DateTime changeTime(long strDateTimel)
+    {
+        string strDateTime = strDateTimel.ToString();
+        localDateTime = DateTime.Parse(strDateTime);
+        univDateTime = localDateTime.ToUniversalTime();
+
+        return univDateTime;
+    }
+}
