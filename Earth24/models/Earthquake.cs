@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Earth24.models
 {
@@ -29,26 +30,11 @@ namespace Earth24.models
         public string place { get; set; }
         public long time { get; set; }
         public long updated { get; set; }
-        public int? tz { get; set; }
-        public string url { get; set; }
-        public string detail { get; set; }
         public int? felt { get; set; }
-        public float? cdi { get; set; }
-        public float? mmi { get; set; }
         public string alert { get; set; }
         public string status { get; set; }
         public int tsunami { get; set; }
         public int sig { get; set; }
-        public string net { get; set; }
-        public string code { get; set; }
-        public string ids { get; set; }
-        public string sources { get; set; }
-        public string types { get; set; }
-        public int? nst { get; set; }
-        public float? dmin { get; set; }
-        public float rms { get; set; }
-        public float? gap { get; set; }
-        public string magType { get; set; }
         public string type { get; set; }
         public string title { get; set; }
     }
@@ -57,6 +43,38 @@ namespace Earth24.models
     {
         public string type { get; set; }
         public float[] coordinates { get; set; }
+
     }
+
+    public class Earthquake1
+    {
+
+        public Feature1[] features { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+    public class Feature1
+    {
+    
+        public Geometry1 geometry { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
+    public class Geometry1
+    {
+        public float[] coordinates { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+
+
 
 }

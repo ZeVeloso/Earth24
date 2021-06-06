@@ -1,0 +1,67 @@
+﻿@page "/bingmaps"
+@inject IJSRuntime JSRuntime
+@using DataLibrary
+@using models
+@using Microsoft.Extensions.Configuration
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Earth24
+@using Microsoft.JSInterop
+@inject IDataAcess _data
+@inject IConfiguration _config
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject IHttpClientFactory _clientFactory
+@inject NavigationManager NavigationManager
+@using System.Threading
+
+
+<div id="map" style="height:800px;width:100%;"> </div>
+
+@code {
+
+    Earthquake1 earthquake;
+
+    string errorString;
+   
+    string jsonString = null;
+    TaskCompletionSource<bool> IsSomethingLoading = new TaskCompletionSource<bool>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var client = _clientFactory.CreateClient("earth");
+
+        try
+        {
+            earthquake = await client.GetFromJsonAsync<Earthquake1>($"query?format=geojson&starttime=2014-01-01&endtime=2014-01-02");
+
+            errorString = null;
+            jsonString = earthquake.ToString();
+            IsSomethingLoading.SetResult(true);
+
+        }
+        catch (Exception e)
+        {
+            errorString = $"There was a error: {e.Message}";
+        }
+
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        
+        await IsSomethingLoading.Task;
+        if (firstRender)
+        {
+
+            await JSRuntime.InvokeVoidAsync("loadBingMap", jsonString);
+        }
+    }
+
+
+
+
+
+}
