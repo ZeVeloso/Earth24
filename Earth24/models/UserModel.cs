@@ -12,4 +12,6 @@ namespace Earth24.Models
         public string Password { get; set; }
 
     }
+
+
 }

@@ -1,0 +1,124 @@
+﻿
+@page "/historico/{startdate}"
+@using DataLibrary
+@using models
+@using Microsoft.Extensions.Configuration
+@inject IDataAcess _data
+@inject IConfiguration _config
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject IHttpClientFactory _clientFactory
+@using System.Net.Http.Json
+@inject NavigationManager NavigationManager
+
+@functions {
+    [Parameter]
+    public string startdate { get; set; }
+    [Parameter]
+    public string enddate { get; set; }
+}
+
+<h3>History for @startdate </h3>
+
+
+<br />
+@*<button onclick="@getHistory()">Default History</button>*@
+
+<button @onclick="DateRedirect">Back</button>
+
+
+
+
+@if (string.IsNullOrWhiteSpace(errorString) == false)
+{
+    <div class="h2">@errorString</div>
+}
+else if (earthquake is null)
+{
+    <br />
+    <div class="h4">Waiting...</div>
+
+}
+else
+{
+    <p>@InitDate</p>
+    <p>@EndDate</p>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Magnitude</th>
+                <th>place</th>
+                <th>time</th>
+                <th>title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var w in earthquake.features)
+            {
+                <tr>
+                    <td>@w.id</td>
+                    <td>@w.properties.mag</td>
+                    <td>@w.properties.place</td>
+                    <td>@w.properties.time</td>
+                    <td>@w.properties.title</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    Earthquake earthquake;
+
+    string errorString;
+
+    private string currentHeading = "Initial heading";
+    private string newHeading;
+    private string InitDate;
+    private string EndDate;
+    DateTime localDateTime, univDateTime;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var client = _clientFactory.CreateClient("earth");
+
+        try
+        {
+            earthquake = await client.GetFromJsonAsync<Earthquake>($"query?format=geojson{startdate}");
+
+            errorString = null;
+        }
+        catch (Exception e)
+        {
+            errorString = $"There was a error: {e.Message}";
+        }
+
+
+    }
+
+    public string url = "/historico";
+
+    public void DateRedirect()
+    {
+
+        // Attach the parameter to the url
+        NavigationManager.NavigateTo(url);
+    }
+
+
+
+
+    private DateTime changeTime(long strDateTimel)
+    {
+        string strDateTime = strDateTimel.ToString();
+        localDateTime = DateTime.Parse(strDateTime);
+        univDateTime = localDateTime.ToUniversalTime();
+
+        return univDateTime;
+    }
+}

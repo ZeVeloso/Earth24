@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Earth24.models
@@ -23,7 +24,8 @@ namespace Earth24.models
 
     public class Properties
     {
-        public float mag { get; set; }
+        
+        public float? mag { get; set; }
         public string place { get; set; }
         public long time { get; set; }
         public long updated { get; set; }
