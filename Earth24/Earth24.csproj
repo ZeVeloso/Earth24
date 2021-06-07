@@ -31,7 +31,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.6" />
     <PackageReference Include="Microsoft.BingMaps.V8.TypeScript" Version="2.0.3" />
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.0.0">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
