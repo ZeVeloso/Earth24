@@ -64,21 +64,21 @@
     </fieldset>
 </form>
 
-<form>
-    <p>Selecione a Ordem:</p>
-    <input type="radio" id="timeDesc" name="sort" @onclick="(() => { RadioButtonClicked(1); })">
-    <label for="male">Tempo Descendente</label><br>
-    <input type="radio" id="timeAsc" name="sort" @onclick="(() => { RadioButtonClicked(2); })">
-    <label for="female">Tempo Ascendente</label><br>
-    <input type="radio" id="magDesc" name="sort" @onclick="(() => { RadioButtonClicked(3); })">
-    <label for="other">Magnitude Descendente</label><br />
-    <input type="radio" id="magAsc" name="sort" @onclick="(() => { RadioButtonClicked(4); })">
-    <label for="other">Magnitude Ascedente</label>
-</form>
+
 
 <div class="row">
     <div class="col">
-
+        <form>
+            <p>Selecione a Ordem:</p>
+            <input type="radio" id="timeDesc" name="sort" @onclick="(() => { RadioButtonClicked(1); })">
+            <label for="male">Tempo Descendente</label><br>
+            <input type="radio" id="timeAsc" name="sort" @onclick="(() => { RadioButtonClicked(2); })">
+            <label for="female">Tempo Ascendente</label><br>
+            <input type="radio" id="magDesc" name="sort" @onclick="(() => { RadioButtonClicked(3); })">
+            <label for="other">Magnitude Descendente</label><br />
+            <input type="radio" id="magAsc" name="sort" @onclick="(() => { RadioButtonClicked(4); })">
+            <label for="other">Magnitude Ascedente</label>
+        </form>
     </div>
     <div class="col">
         <button class="btn btn-outline-dark text-center btn-block" @onclick="DateRedirect">Filter</button>
@@ -167,12 +167,12 @@
         if (magDesc != "off" && magDesc != null)
         {
 
-            i++; query = query + $"&orderby=magnitude={maxmagnitude}";
+            i++; query = query + $"&orderby=magnitude{maxmagnitude}";
         }
         if (magAsc != "off" && magAsc != null)
         {
 
-            i++; query = query + $"&orderby=magnitude-asc={minmagnitude}";
+            i++; query = query + $"&orderby=magnitude-asc{minmagnitude}";
         }
         return query;
     }

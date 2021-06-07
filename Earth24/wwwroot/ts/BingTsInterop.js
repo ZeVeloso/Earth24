@@ -21,44 +21,43 @@ function AddPushpin(sitePin) {
     });
     bingMap.map.entities.push(pushpin);
 }
-
 var infobox;
-
 function loadBingMap(jsonS) {
-    
     var map = new Microsoft.Maps.Map(document.getElementById('map'), { zoom: 2, center: new Microsoft.Maps.Location(0, 0) });
-
-    var pin1 = new Microsoft.Maps.Pushpin(map.getCenter(), { color: "green" });
-    map.entities.push(pin1);
     infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
         visible: false
     });
     infobox.setMap(map);
-
+    var pin1 = new Microsoft.Maps.Pushpin(map.getCenter(), { icon: "Imagens/amarelo3.png" });
+    map.entities.push(pin1);
     var jsonData = JSON.parse(jsonS);
     for (var i = 0; i < jsonData.features.length; i++) {
         var lat = jsonData.features[i].geometry.coordinates[0];
         var long = jsonData.features[i].geometry.coordinates[1];
         var title = jsonData.features[i].properties.title;
+        var time = jsonData.features[i].properties.time;
         var mag = jsonData.features[i].properties.mag;
-        if (mag < 2) var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "green"});
-        else if (mag >= 2 && mag < 5) var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "yellow" });
-        else if (mag >= 5 && mag <= 10) var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color : "red" });
-        else var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color : "white" });
-       
-
+        if (mag < 2)
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/green3.png" });
+        else if (mag >= 2 && mag < 5)
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/amarelo3.png" });
+        else if (mag >= 5 && mag <= 10)
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/red1.png" });
+        else
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/white1.png" });
+        var ola = 1388620296020;
+        var time1 = parseFloat((ola.toString()) + "0");
+        var d = new Date(time); // The 0 there is the key, which sets the date to the epoch
+        //d.setUTCSeconds(13886202960200);
         pin.metadata = {
             title: ' ' + title,
-            description: 'Magnitude: ' + mag
+            description: 'Magnitude: ' + mag + " | Date: " + d
         };
-
         Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
-
         map.entities.push(pin);
     }
     return "";
 }
-
 function pushpinClicked(e) {
     //Make sure the infobox has metadata to display.
     if (e.target.metadata) {
@@ -71,5 +70,4 @@ function pushpinClicked(e) {
         });
     }
 }
-
 //# sourceMappingURL=BingTsInterop.js.map
