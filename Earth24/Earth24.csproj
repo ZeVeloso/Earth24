@@ -27,6 +27,11 @@
   <ItemGroup>
     <None Remove="Pages\About.scss" />
     <None Remove="Pages\coco.css" />
+    <None Remove="Pages\UserPrivate.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\UserPrivate.razor.css" />
   </ItemGroup>
 
   <ItemGroup>

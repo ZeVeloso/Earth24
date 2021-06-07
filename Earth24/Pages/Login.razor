@@ -1,5 +1,14 @@
 ﻿@page "/login"
 
+
+@using DataLibrary
+@using Earth24.models
+@using Earth24.Models
+@using Microsoft.Extensions.Configuration
+@inject IDataAcess _data
+@inject IConfiguration _config
+@inject NavigationManager NavigationManager
+
 <h3>Login</h3>
 
 <style>
@@ -54,5 +63,26 @@
 
 
 @code {
+    List<UserModel> user1;
+    UserModel user;
+    public string Username { get; set; }
+    public string PasswordUser { get; set; }
+    public string Mail { get; set; }
+    public string passUser { get; set; }
+
+    public async Task Login1()
+    {
+        string sql = $" CALL mypassword('{Mail}');";
+        user1 = await _data.LoadData<UserModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        if (user1[0].Password == PasswordUser) Redirect();
+
+    }
+
+    public void Redirect()
+    {
+        string url = "/user";
+        NavigationManager.NavigateTo(url + "/" + Username);
+    }
 
 }
