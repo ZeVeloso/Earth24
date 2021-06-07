@@ -24,12 +24,12 @@ function AddPushpin(sitePin) {
 var infobox;
 function loadBingMap(jsonS) {
     var map = new Microsoft.Maps.Map(document.getElementById('map'), { zoom: 2, center: new Microsoft.Maps.Location(0, 0) });
-    var pin1 = new Microsoft.Maps.Pushpin(map.getCenter(), { color: "green" });
-    map.entities.push(pin1);
     infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
         visible: false
     });
     infobox.setMap(map);
+    var pin1 = new Microsoft.Maps.Pushpin(map.getCenter(), { icon: "Imagens/amarelo3.png" });
+    map.entities.push(pin1);
     var jsonData = JSON.parse(jsonS);
     for (var i = 0; i < jsonData.features.length; i++) {
         var lat = jsonData.features[i].geometry.coordinates[0];
@@ -38,13 +38,13 @@ function loadBingMap(jsonS) {
         var time = jsonData.features[i].properties.time;
         var mag = jsonData.features[i].properties.mag;
         if (mag < 2)
-            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "green" });
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/green3.png" });
         else if (mag >= 2 && mag < 5)
-            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "yellow" });
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/amarelo3.png" });
         else if (mag >= 5 && mag <= 10)
-            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "red" });
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/red1.png" });
         else
-            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "white" });
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { icon: "Imagens/white1.png" });
         var ola = 1388620296020;
         var time1 = parseFloat((ola.toString()) + "0");
         var d = new Date(time); // The 0 there is the key, which sets the date to the epoch
