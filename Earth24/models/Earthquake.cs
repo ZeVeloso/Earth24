@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Earth24.models
 {
 
     public class Earthquake
-{
+    {
         public string type { get; set; }
         public Feature[] features { get; set; }
         public float[] bbox { get; set; }
@@ -25,7 +20,7 @@ namespace Earth24.models
 
     public class Properties
     {
-        
+
         public float? mag { get; set; }
         public string place { get; set; }
         public long time { get; set; }
@@ -57,7 +52,7 @@ namespace Earth24.models
     }
     public class Feature1
     {
-    
+
         public Geometry1 geometry { get; set; }
         public Properties1 properties { get; set; }
         public override string ToString()
