@@ -8,9 +8,13 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="about" target="_blank">About</a>
+            <a href="about" target="_blank">Sobre Nós</a>
             <a href="SignUp" target="_blank">Registo</a>
             <a href="login" target="_blank">Login</a>
+            @if (logged == true)
+            {
+                <a href="" target="_blank">Bem Vindo @username</a>
+            }
         </div>
 
 
@@ -19,3 +23,16 @@
         </div>
     </div>
 </div>
+
+@code{
+
+    public bool logged=false;
+    public string username;
+
+    public void ImLogged(string username1)
+    {
+        logged = true;
+        username = username1;
+    }
+
+}

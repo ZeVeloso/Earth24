@@ -21,13 +21,35 @@
     public string enddate { get; set; }
 }
 
-<h3>History @*@startdate*@ </h3>
+
+<h3 class="text-center ">Historico de Terramotos</h3>
+
 
 <br />
 
-<button class="centering btn-outline-dark rounded-pill btn-block" @onclick="DateRedirect">Back</button>
+<div class="row">
+    <div class="col">
 
+    </div>
+    <div class="col">
+       
+    </div>
+    <div class="col">
 
+    </div>
+    <div class="col">
+        <button class="centering rounded-pill btn-block btn btn-outline-info" @onclick="DateRedirect">Back</button>
+    </div>
+    <div class="col">
+      
+    </div>
+    <div class="col">
+
+    </div>
+    <div class="col">
+
+    </div>
+</div>
 
 
 @if (string.IsNullOrWhiteSpace(errorString) == false)
@@ -54,20 +76,20 @@ else
                 <th>Localização</th>
                 <th>Data</th>
                 <th>Título</th>
-                <th>Sentido</th>
+                
             </tr>
         </thead>
         <tbody>
             @foreach (var w in earthquake.features)
             {
-                
-            <tr>
-                <td>@w.properties.mag</td>
-                <td>@w.properties.place</td>
-                <td>@changeTime(@w.properties.time)</td>
-                <td>@w.properties.title</td>
-                <td>@w.properties.felt</td>
-            </tr>
+
+                <tr>
+                    <td>@w.properties.mag</td>
+                    <td>@w.properties.place</td>
+                    <td>@changeTime(@w.properties.time)</td>
+                    <td>@w.properties.title</td>
+                    
+                </tr>
 
             }
         </tbody>
@@ -119,7 +141,7 @@ else
 
     private string changeTime(long strDateTimel)
     {
-        
+
         long dateL = (long)Convert.ToDouble((strDateTimel.ToString() + "0")); ;
 
         DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

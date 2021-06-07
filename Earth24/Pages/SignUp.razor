@@ -12,8 +12,8 @@
 
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
-            <h4 class="card-title mt-3 text-center">Create Account</h4>
-            <p class="text-center">Get started with your free account</p>
+            <h4 class="card-title mt-3 text-center">Cria uma Conta</h4>
+            <p class="text-center">Insira os seus dados</p>
 
             <p class="divider-text">
                 <span class="bg-light">OR</span>
@@ -23,66 +23,48 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
-                    <input name="" class="form-control" placeholder="Full name" type="text" @bind="Username1">
+                    <input name="" class="form-control" placeholder="Nome de Utilizador" type="text" @bind="Username1">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                     </div>
-                    <input name="" class="form-control" placeholder="Email address" type="email" @bind="Email">
+                    <input name="" class="form-control" placeholder="Endereço de Email" type="email" @bind="Email">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-phone" ></i> </span>
                     </div>
                     <select class="custom-select" style="max-width: 120px;">
-                        <option selected="">+971</option>
+                        <option selected="">+351</option>
                         <option value="1">+972</option>
                         <option value="2">+198</option>
                         <option value="3">+701</option>
                     </select>
-                    <input name="" class="form-control" placeholder="Phone number" @bind="NumeroTel" type="text">
+                    <input name="" class="form-control" placeholder="Número de Telemovel" @bind="NumeroTel" type="text">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="Create password" type="password" @bind="Password1">
+                    <input class="form-control" placeholder="Crie uma Password" type="password" @bind="Password1">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="Repeat password" type="password" />
+                    <input class="form-control" placeholder="Repita a Password" type="password" />
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <button  class="btn btn-primary btn-block" @onclick="InsertData"> Create Account  </button>
+                    <button  class="btn btn-primary btn-block" @onclick="InsertData"> Crie a sua Conta  </button>
                 </div> <!-- form-group// -->
-                <p class="text-center">Have an account? <a href="">Log In</a> </p>
+                <p class="text-center">Têm uma conta? <a href="login">Inicie Sessão</a> </p>
             </form>
         </article>
     </div> <!-- card.// -->
 
 </div>
 
-
-@*@if (user == null)
-    {
-<p><em>Loading...</em></p>
-    }
-    else
-    {
-@foreach (var p in user)
-        {
-<p>
-    @p.idUtilizador_Registado @p.Password @p.Nome
-
-</p>
-
-
-        }
-
-  }*@
 
 @code {
 
@@ -96,11 +78,6 @@
     public string Email { get; set; }
     public string NumeroTel{ get; set; }
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    string sql = "select * from utilizador_registado";
-    //    user = await _data.LoadData<UserModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
-    //}
 
     public async Task InsertData()
     {
