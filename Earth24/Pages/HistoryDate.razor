@@ -21,13 +21,11 @@
     public string enddate { get; set; }
 }
 
-<h3>History for @startdate </h3>
-
+<h3>History @*@startdate*@ </h3>
 
 <br />
-@*<button onclick="@getHistory()">Default History</button>*@
 
-<button @onclick="DateRedirect">Back</button>
+<button class="centering btn-outline-dark rounded-pill btn-block" @onclick="DateRedirect">Back</button>
 
 
 
@@ -39,7 +37,7 @@
 else if (earthquake is null)
 {
     <br />
-    <div class="h4">Waiting...</div>
+    <div class="h4 text-center">Loading...</div>
 
 }
 else
@@ -47,10 +45,11 @@ else
     <p>@InitDate</p>
     <p>@EndDate</p>
 
+    @*<p>@changeTime(123)</p>*@
+
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                <th>ID</th>
                 <th>Magnitude</th>
                 <th>place</th>
                 <th>time</th>
@@ -60,10 +59,11 @@ else
         <tbody>
             @foreach (var w in earthquake.features)
             {
+                
                 <tr>
                     <td>@w.properties.mag</td>
                     <td>@w.properties.place</td>
-                    <td>@w.properties.time</td>
+                    <td>@changeTime(@w.properties.time)</td>
                     <td>@w.properties.title</td>
                 </tr>
 
@@ -115,12 +115,20 @@ else
 
 
 
-    private DateTime changeTime(long strDateTimel)
+    private string changeTime(long strDateTimel)
     {
-        string strDateTime = strDateTimel.ToString();
-        localDateTime = DateTime.Parse(strDateTime);
-        univDateTime = localDateTime.ToUniversalTime();
+        //string strDateTime = strDateTimel.ToString();
+        //string strDateTime = "1623017008680";
+        //localDateTime = DateTime.Parse(strDateTime);
+        //univDateTime = localDateTime.ToUniversalTime();
 
-        return univDateTime;
+        //return univDateTime.ToString();
+        long dateL = (long)Convert.ToDouble((strDateTimel.ToString() + "0")); ;
+
+        DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime date = start.AddMilliseconds(dateL / 10).ToLocalTime();
+
+        var dtstr1 = date.ToString("MM/dd/yyyy");  // 02/19/2014
+        return dtstr1;
     }
 }

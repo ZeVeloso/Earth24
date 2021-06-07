@@ -21,15 +21,55 @@ function AddPushpin(sitePin) {
     });
     bingMap.map.entities.push(pushpin);
 }
+
+var infobox;
+
 function loadBingMap(jsonS) {
+    
     var map = new Microsoft.Maps.Map(document.getElementById('map'), { zoom: 2, center: new Microsoft.Maps.Location(0, 0) });
+
+    var pin1 = new Microsoft.Maps.Pushpin(map.getCenter(), { color: "green" });
+    map.entities.push(pin1);
+    infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
+        visible: false
+    });
+    infobox.setMap(map);
+
     var jsonData = JSON.parse(jsonS);
     for (var i = 0; i < jsonData.features.length; i++) {
         var lat = jsonData.features[i].geometry.coordinates[0];
         var long = jsonData.features[i].geometry.coordinates[1];
-        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "green" });
+        var title = jsonData.features[i].properties.title;
+        var mag = jsonData.features[i].properties.mag;
+        if (mag < 2) var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "green"});
+        else if (mag >= 2 && mag < 5) var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color: "yellow" });
+        else if (mag >= 5 && mag <= 10) var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color : "red" });
+        else var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(long, lat), { color : "white" });
+       
+
+        pin.metadata = {
+            title: ' ' + title,
+            description: 'Magnitude: ' + mag
+        };
+
+        Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
+
         map.entities.push(pin);
     }
     return "";
 }
+
+function pushpinClicked(e) {
+    //Make sure the infobox has metadata to display.
+    if (e.target.metadata) {
+        //Set the infobox options with the metadata of the pushpin.
+        infobox.setOptions({
+            location: e.target.getLocation(),
+            title: e.target.metadata.title,
+            description: e.target.metadata.description,
+            visible: true
+        });
+    }
+}
+
 //# sourceMappingURL=BingTsInterop.js.map

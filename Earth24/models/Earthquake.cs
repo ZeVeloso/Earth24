@@ -59,10 +59,24 @@ namespace Earth24.models
     {
     
         public Geometry1 geometry { get; set; }
+        public Properties1 properties { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
         }
+    }
+    public class Properties1
+    {
+
+        public float? mag { get; set; }
+        public string place { get; set; }
+        public long time { get; set; }
+        public int? felt { get; set; }
+        public string alert { get; set; }
+        public string status { get; set; }
+        public int tsunami { get; set; }
+        public string type { get; set; }
+        public string title { get; set; }
     }
 
     public class Geometry1

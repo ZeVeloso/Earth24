@@ -29,4 +29,8 @@
     <TypeScriptCompile Include="wwwroot\ts\BingTsInterop.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Imagens\amarelo.png" />
+  </ItemGroup>
+
 </Project>

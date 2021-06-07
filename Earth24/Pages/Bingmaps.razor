@@ -18,12 +18,13 @@
 
 <div id="map" style="height:800px;width:100%;"> </div>
 
+
 @code {
 
     Earthquake1 earthquake;
 
     string errorString;
-   
+
     string jsonString = null;
     TaskCompletionSource<bool> IsSomethingLoading = new TaskCompletionSource<bool>();
 
@@ -51,7 +52,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        
+
         await IsSomethingLoading.Task;
         if (firstRender)
         {
@@ -64,4 +65,4 @@
 
 
 
-}
+    }
