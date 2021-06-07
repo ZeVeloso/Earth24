@@ -51,21 +51,23 @@ else
         <thead class="thead-dark">
             <tr>
                 <th>Magnitude</th>
-                <th>place</th>
-                <th>time</th>
-                <th>title</th>
+                <th>Localização</th>
+                <th>Data</th>
+                <th>Título</th>
+                <th>Sentido</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var w in earthquake.features)
             {
                 
-                <tr>
-                    <td>@w.properties.mag</td>
-                    <td>@w.properties.place</td>
-                    <td>@changeTime(@w.properties.time)</td>
-                    <td>@w.properties.title</td>
-                </tr>
+            <tr>
+                <td>@w.properties.mag</td>
+                <td>@w.properties.place</td>
+                <td>@changeTime(@w.properties.time)</td>
+                <td>@w.properties.title</td>
+                <td>@w.properties.felt</td>
+            </tr>
 
             }
         </tbody>
@@ -117,12 +119,7 @@ else
 
     private string changeTime(long strDateTimel)
     {
-        //string strDateTime = strDateTimel.ToString();
-        //string strDateTime = "1623017008680";
-        //localDateTime = DateTime.Parse(strDateTime);
-        //univDateTime = localDateTime.ToUniversalTime();
-
-        //return univDateTime.ToString();
+        
         long dateL = (long)Convert.ToDouble((strDateTimel.ToString() + "0")); ;
 
         DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
