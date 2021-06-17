@@ -39,8 +39,7 @@ function loadBingMap(jsonS) {
         visible: false
     });
     infobox.setMap(map);
-    var pin1 = new Microsoft.Maps.Pushpin(map.getCenter(), { icon: "Imagens/amarelo3.png" });
-    map.entities.push(pin1);
+   
     var jsonData = JSON.parse(jsonS);
     for (var i = 0; i < jsonData.features.length; i++) {
         var lat = jsonData.features[i].geometry.coordinates[0];

@@ -17,9 +17,74 @@
 
 @if (errorString != null)
 {<h3>Loading...</h3>}
-else {
-<div id="map" style="height:800px;width:100%;"> </div>
+else
+{
+    <div id="map" style="height:800px;width:100%;"> </div>
 }
+
+<br />
+<br />
+
+<form>
+    <fieldset>
+        <legend>Data</legend>
+        <div class="row">
+            <div class="col">
+                Data Inicial <input id="initdate" name="initdate" class="form-control" placeholder="yyyy-mm-dd" @bind="InitDate" />
+            </div>
+            <div class="col">
+                Data Final <input id="enddate" name="enddate" class="form-control" placeholder="yyyy-mm-dd" @bind="EndDate" />
+            </div>
+        </div>
+    </fieldset>
+</form>
+<br />
+<form>
+    <fieldset>
+        <legend>Magnitude</legend>
+        <div class="row">
+            <div class="col">
+                Mínima: <input type="text" class="form-control" placeholder="[0,10]" @bind="minmagnitude"><br>
+            </div>
+            <div class="col">
+                Máxima: <input type="text" class="form-control" placeholder="[0,10]" @bind="maxmagnitude"><br>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<form>
+    <fieldset>
+        <legend>Circulo</legend>
+        <div class="row">
+            <div class="col">
+                Latitude: <input type="number" class="form-control" placeholder="[-90,90]" @bind="Latitude"><br>
+            </div>
+            <div class="col">
+                Longitude: <input type="number" class="form-control" placeholder="[-180,180]" @bind="Longitude"><br>
+            </div>
+            <div class="col">
+                Raio de Procura: <input id="radius" type="number" name="radius" class="form-control" placeholder="[0, 20001.6] km" @bind="Radius" />
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+
+
+<div class="row">
+    <div class="col">
+
+    </div>
+    <div class="col">
+        <button class="btn btn-outline-dark text-center btn-block" @onclick="DateRedirect">Filter</button>
+        <h5 class="text-center alert-warning">@filterError</h5>
+    </div>
+    <div class="col">
+
+    </div>
+</div>
+
 
 @code {
 
@@ -68,7 +133,118 @@ else {
     }
 
 
+    private string currentHeading = "Initial heading";
+    private string newHeading;
+    public string InitDate { get; set; }
+    public string EndDate { get; set; }
+    public string Latitude { get; set; }
+    public string Longitude { get; set; }
+    public string Radius { get; set; }
+    public string maxmagnitude { get; set; }
+    public string minmagnitude { get; set; }
+    public string timeDesc { get; set; }
+    public string timeAsc { get; set; }
+    public string magDesc { get; set; }
+    public string magAsc { get; set; }
 
+    private string filterError;
+
+    public void DateRedirect()
+    {
+        string url = "/map";
+        string query = queryString();
+        if (query == "") filterError = "Nao selecionou Filtros";
+        else
+            NavigationManager.NavigateTo(url + "/" + query);
+    }
+
+    public string queryString()
+    {
+        string query = "";
+
+        int i = 0;
+        if (InitDate != null) { i++; query = query + $"&starttime={InitDate}"; }
+        if (EndDate != null)
+        {
+
+            i++; query = query + $"&endtime={EndDate}";
+        }
+        if (EndDate != null)
+        {
+
+            i++; query = query + $"&endtime={EndDate}";
+        }
+        if (Latitude != null && Longitude != null && Radius != null)
+        {
+
+            i++; query = query + $"&latitude={Latitude}&longitude={Longitude}&maxradiuskm={Radius}";
+        }
+        else if (Latitude != null || Latitude != null || Radius != null) filterError = "Circulo Imcompleto";
+
+        if (maxmagnitude != null)
+        {
+
+            i++; query = query + $"&maxmagnitude={maxmagnitude}";
+        }
+        if (minmagnitude != null)
+        {
+
+            i++; query = query + $"&minmagnitude={minmagnitude}";
+        }
+        if (timeDesc != "off" && timeDesc != null)
+        {
+
+            i++; query = query + $"&orderby=time{Longitude}";
+        }
+        if (timeAsc != "off" && timeAsc != null)
+        {
+
+            i++; query = query + $"&orderby=time-asc{Radius}";
+        }
+        if (magDesc != "off" && magDesc != null)
+        {
+
+            i++; query = query + $"&orderby=magnitude{maxmagnitude}";
+        }
+        if (magAsc != "off" && magAsc != null)
+        {
+
+            i++; query = query + $"&orderby=magnitude-asc{minmagnitude}";
+        }
+        return query;
+    }
+
+    public void RadioButtonClicked(int value)
+    {
+        if (value == 1)
+        {
+            timeDesc = "on";
+            timeAsc = "off";
+            magDesc = "off";
+            magAsc = "off";
+        }
+        if (value == 2)
+        {
+            timeDesc = "off";
+            timeAsc = "on";
+            magDesc = "off";
+            magAsc = "off";
+        }
+        if (value == 3)
+        {
+            timeDesc = "off";
+            timeAsc = "off";
+            magDesc = "on";
+            magAsc = "off";
+        }
+        if (value == 4)
+        {
+            timeDesc = "off";
+            timeAsc = "off";
+            magDesc = "off";
+            magAsc = "on";
+        }
+    }
 
 
 }

@@ -1,0 +1,111 @@
+﻿@page "/map/{query}"
+@inject IJSRuntime JSRuntime
+@using DataLibrary
+@using models
+@using Microsoft.Extensions.Configuration
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Earth24
+@using Microsoft.JSInterop
+@inject IDataAcess _data
+@inject IConfiguration _config
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject IHttpClientFactory _clientFactory
+@inject NavigationManager NavigationManager
+@using System.Threading
+
+@functions {
+    [Parameter]
+    public string query { get; set; }
+}
+
+
+<div class="row">
+    <div class="col">
+
+    </div>
+    <div class="col">
+       
+    </div>
+    <div class="col">
+
+    </div>
+    <div class="col">
+        <button class="centering rounded-pill btn-block btn btn-outline-info" @onclick="DateRedirect">Back</button>
+    </div>
+    <div class="col">
+      
+    </div>
+    <div class="col">
+
+    </div>
+    <div class="col">
+
+    </div>
+</div>
+
+@if (errorString != null)
+{<h3>Loading...</h3>}
+else
+{
+    <div id="map" style="height:800px;width:100%;"> </div>
+}
+
+@code {
+
+    Earthquake1 earthquake;
+    DateTime date1 = DateTime.Today.AddDays(-3);
+    string lastDays;
+    string today;
+    string errorString;
+
+    string jsonString = null;
+    TaskCompletionSource<bool> IsSomethingLoading = new TaskCompletionSource<bool>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var client = _clientFactory.CreateClient("earth");
+
+        try
+        {
+            today = DateTime.Today.ToString("yyyy-MM-dd");
+            lastDays = date1.ToString("yyyy-MM-dd");
+            earthquake = await client.GetFromJsonAsync<Earthquake1>($"query?format=geojson{query}");
+
+            errorString = null;
+            jsonString = earthquake.ToString();
+            IsSomethingLoading.SetResult(true);
+
+        }
+        catch (Exception e)
+        {
+            errorString = $"Erro!! Filtros incorretos";
+        }
+
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await IsSomethingLoading.Task;
+        if (firstRender)
+        {
+
+            await JSRuntime.InvokeVoidAsync("loadBingMap", jsonString);
+        }
+    }
+
+    public void DateRedirect()
+    {
+        string url = "/";
+        // Attach the parameter to the url
+        NavigationManager.NavigateTo(url);
+    }
+
+
+
+
+}
