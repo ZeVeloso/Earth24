@@ -54,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Imagens\amarelo.png" />
     <None Include="wwwroot\Imagens\logo.png" />
   </ItemGroup>
 
